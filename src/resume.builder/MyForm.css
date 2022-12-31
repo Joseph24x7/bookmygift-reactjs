@@ -1,0 +1,64 @@
+/* MyForm.css */
+
+body {
+    background-color:#D3D3D3;
+}
+
+/* Add a background color and padding to the container */
+.container {
+    background-color: white;
+    padding: 30px;
+  }
+  
+  /* Align the form element to the left center of the page */
+  .form {
+    display: flex;
+    justify-content: flex-start; /* Align to the left */
+    align-items: center; /* Align to the center */
+    width: 500px; /* Increase the width */
+    font-size: 20px; /* Increase the font size */
+    font-family: Verdana, Geneva, Tahoma, sans-serif; /* Use a creative font */
+  }
+  
+  /* Add styles to the title and subtitle */
+  .title {
+    margin-top: 50px; /* Add a top margin to the title */
+    color: blue;
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    margin-top: 20px;
+    color: blue;
+    font-size: 24px;
+  }
+  
+  /* Add styles to the input-container */
+  .input-container {
+    display: flex; /* Use the flex layout */
+    justify-content: space-between; /* Align the elements to the right */
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .success-message {
+    color: green;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Add styles to the input elements */
+  input[type='text'],
+  input[type='submit'] {
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid blue;
+    border-radius: 5px;
+  }
+  
+  input[type='submit'] {
+    background-color: blue;
+    color: white;
+  }
+  
