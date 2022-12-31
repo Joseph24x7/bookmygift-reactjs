@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import MyForm from '../resume.builder/MyForm';
+import MyForm from './resume.builder/MyForm';
 
 function App() {
   return (
