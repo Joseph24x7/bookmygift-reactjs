@@ -1,4 +1,4 @@
-/* MyForm.css */
+/* HomePage.css */
 
 body {
   background-color: beige;
@@ -16,7 +16,8 @@ body {
 }
 
 .input-container {
-  margin-top: 20px;
+  margin-top: 20px; 
+  display: block;
 }
 
 .subtitle {
@@ -41,9 +42,17 @@ body {
   margin-top: 30px;
 }
 
+.error-message {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
 /* Add styles to the input elements */
 input[type='text'],
-input[type='submit'] {
+input[type='submit'],
+input[type='password'] {
   font-size: 15px;
   padding: 5px;
   border: 1px solid black;

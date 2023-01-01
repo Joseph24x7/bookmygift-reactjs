@@ -1,10 +1,10 @@
 import React from 'react';
-import MyForm from './resume.builder/MyForm';
+import HomePage from './resumebuilder/HomePage';
 
 function App() {
   return (
     <div>
-      <MyForm />
+      <HomePage />
     </div>
   );
 }
