@@ -7,6 +7,7 @@ function MyForm() {
   // Declaring variables
   const [url, setUrl] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Declare a function to handle the form change
   const handleChange = (event) => {
@@ -16,7 +17,22 @@ function MyForm() {
   // Declare a function to handle the form submission
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
-    setShowSuccessMessage(true);
+
+    fetch('http://localhost:8080/getSuccessMessage', {
+      method: 'POST',
+      body: JSON.stringify({ url }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    .then(res => res.text())
+      .then(response => {
+        setSuccessMessage(response);
+        setShowSuccessMessage(true);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   };
 
   return (
@@ -32,7 +48,7 @@ function MyForm() {
       </form>
       {showSuccessMessage && (
         <div className="success-message">
-          Success! You have submitted the form.
+          {successMessage}
         </div>
       )}
     </div>
