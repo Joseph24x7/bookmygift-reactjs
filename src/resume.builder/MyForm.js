@@ -8,38 +8,33 @@ function MyForm() {
   const [url, setUrl] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  // Declare an event handler function to update the "url" state variable when the user types in the text field
+  // Declare a function to handle the form change
   const handleChange = (event) => {
     setUrl(event.target.value);
   };
 
   // Declare a function to handle the form submission
   const handleSubmit = (event) => {
-    // Prevent the default form submission behavior
-    event.preventDefault();
-
-    // Use the "url" state variable to do something with the entered URL, such as making an API call or navigating to a new page
-
+    event.preventDefault(); // Prevent the default form submission behavior
     setShowSuccessMessage(true);
   };
 
   return (
     <div className="container">
+      <h1 className="title">Resume Builder</h1>
+      <form onSubmit={handleSubmit} className="form">
+        <div className="input-container">
+          <label>
+            <p className="subtitle">Enter your LinkedIn URL :
+              <input type="text" value={url} onChange={handleChange} className="textValue" />
+              <input type="submit" value="Submit" /></p></label>
+        </div>
+      </form>
       {showSuccessMessage && (
         <div className="success-message">
           Success! You have submitted the form.
         </div>
       )}
-      <h1 className="title">Resume Builder</h1>
-      <p className="subtitle">Enter your LinkedIn URL below:</p>
-      <form onSubmit={handleSubmit} className="form">
-        <div className="input-container">
-          <label>
-            <input type="text" value={url} onChange={handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </div>
-      </form>
     </div>
   );
 }
