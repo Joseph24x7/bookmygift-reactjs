@@ -1,16 +1,16 @@
 /* HomePage.css */
 
 body {
-  background-color: beige;
+  background-color: whitesmoke;
 }
 
 .container {
-  background-color: beige;
+  background-color: whitesmoke;
   padding: 15px;
 }
 
 .title {
-  color: green;
+  color: darkgreen;
   font-size: 50px;
   font-weight: bold;
 }
@@ -22,10 +22,18 @@ body {
 
 .subtitle {
   margin-top: 10px;
-  color: green;
+  color: darkgreen;
   font-size: 24px;
   font-weight: bold;
   margin-left: 40px;
+}
+
+.response {
+  margin-top: 10px;
+  color: green;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 20px;
 }
 
 .textValue {
@@ -36,7 +44,7 @@ body {
 }
 
 .success-message {
-  color: green;
+  color: darkgreen;
   font-size: 24px;
   font-weight: bold;
   margin-top: 30px;
