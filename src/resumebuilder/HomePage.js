@@ -13,6 +13,22 @@ function HomePage() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [showErrorMessage, setShowErrorMessage] = useState(false)
+  const [showContactDetails, setShowContactDetails] = useState(false)
+  const [showSummary, setShowSummary] = useState(false)
+
+  // Toggle the showContactDetails state when the name is clicked
+  const handleClick = (event) => {
+    if (event.target.name === 'username' && event.target.value != null) {
+      setShowContactDetails(true)
+    }
+
+    if (
+      (event.target.name === 'mobile' && event.target.value != null) ||
+      (event.target.name === 'email' && event.target.value != null)
+    ) {
+      setShowSummary(true)
+    }
+  }
 
   // Declare a function to handle the form change
   const handleChange = (event) => {
@@ -34,24 +50,10 @@ function HomePage() {
     if (!username || !summary || !mobile || !email) {
       setErrorMessage('All fields are required')
       setShowErrorMessage(true)
-      return
+    } else {
+      setShowSuccessMessage(true)
+      setShowErrorMessage(false)
     }
-
-    fetch('http://localhost:8080/addorUpdateResumeDetails', {
-      method: 'POST',
-      body: JSON.stringify({ username, summary, mobile, email }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => res.text())
-      .then((response) => {
-        setShowSuccessMessage(true)
-        setShowErrorMessage(false) // Reset the error message
-      })
-      .catch((error) => {
-        setErrorMessage(error)
-        setShowErrorMessage(true)
-        setShowSuccessMessage(false) // Reset the success message
-      })
   }
 
   return (
@@ -68,63 +70,82 @@ function HomePage() {
                 value={username}
                 onChange={handleChange}
                 className="textValue"
+                onClick={handleClick}
               />{' '}
             </label>
           </div>
-          <div className="input-container">
-            <label className="subtitle">
-              {' '}
-              Professional Summary :{' '}
-              <input
-                type="text"
-                name="summary"
-                value={summary}
-                onChange={handleChange}
-                className="textValue"
-              />{' '}
-            </label>
-          </div>
-          <div className="input-container">
-            <label className="subtitle">
-              {' '}
-              Mobile Number :{' '}
-              <input
-                type="text"
-                name="mobile"
-                value={mobile}
-                onChange={handleChange}
-                className="textValue"
-              />
-            </label>
-          </div>
-          <div className="input-container">
-            <label className="subtitle">
-              {' '}
-              Email Number :{' '}
-              <input
-                type="text"
-                name="email"
-                value={email}
-                onChange={handleChange}
-                className="textValue"
-              />
-            </label>
-          </div>
-          <div className="input-container">
-            <label className="subtitle">
-              <input type="submit" value="Submit" />
-            </label>
-          </div>
+
+          {showContactDetails && (
+            <div>
+              <div className="input-container">
+                <label className="subtitle">
+                  {' '}
+                  Mobile Number :{' '}
+                  <input
+                    type="text"
+                    name="mobile"
+                    value={mobile}
+                    onChange={handleChange}
+                    className="textValue"
+                    onClick={handleClick}
+                  />
+                </label>
+              </div>
+              <div className="input-container">
+                <label className="subtitle">
+                  {' '}
+                  Email Number :{' '}
+                  <input
+                    type="text"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
+                    className="textValue"
+                    onClick={handleClick}
+                  />
+                </label>
+              </div>
+
+              {showSummary && (
+                <div>
+                  <div className="input-container">
+                    <label className="subtitle">
+                      Professional Summary :{' '}
+                      <textarea
+                        name="summary"
+                        value={summary}
+                        onChange={handleChange}
+                        className="textareaValue"
+                        maxLength="1000"
+                      />
+                    </label>
+                  </div>
+                  <div className="input-container">
+                    <label className="subtitle">
+                      <input type="submit" value="Submit" />
+                    </label>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </form>
       )}
 
       {showSuccessMessage && (
         <div>
           <label className="username">{username}</label>
-          <label className="mobilenumber"><img className="mobilelogo" src={mobilelogo} alt="Mobile : " /> : {' '}  {mobile}</label>
-          <label className="emailaddress"><img className="mobilelogo" src={emaillogo} alt="Email : " /> : {' '}  {email}</label>
+          <label className="mobilenumber">
+            <img className="mobilelogo" src={mobilelogo} alt="Mobile : " /> :{' '}
+            {mobile}
+          </label>
+          <label className="emailaddress">
+            <img className="mobilelogo" src={emaillogo} alt="Email : " /> :{' '}
+            {email}
+          </label>
           <hr />
-          <div className="input-container">PROESSIONAL SUMMARY: </div><p className="summary">{summary}</p>
+          <div className="input-container">PROESSIONAL SUMMARY: </div>
+          <p className="summary">{summary}</p>
         </div>
       )}
       {showErrorMessage && <div className="error-message">{errorMessage}</div>}
