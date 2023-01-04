@@ -16,20 +16,6 @@ function HomePage() {
   const [showContactDetails, setShowContactDetails] = useState(false)
   const [showSummary, setShowSummary] = useState(false)
 
-  // Toggle the showContactDetails state when the name is clicked
-  const handleClick = (event) => {
-    if (event.target.name === 'username' && event.target.value != null) {
-      setShowContactDetails(true)
-    }
-
-    if (
-      (event.target.name === 'mobile' && event.target.value != null) ||
-      (event.target.name === 'email' && event.target.value != null)
-    ) {
-      setShowSummary(true)
-    }
-  }
-
   // Declare a function to handle the form change
   const handleChange = (event) => {
     if (event.target.name === 'username') {
@@ -41,6 +27,18 @@ function HomePage() {
     } else if (event.target.name === 'email') {
       setEmail(event.target.value)
     }
+
+    if (event.target.name === 'username' && event.target.value != null) {
+      setShowContactDetails(true)
+    }
+
+    if (
+      (event.target.name === 'mobile' && event.target.value != null) ||
+      (event.target.name === 'email' && event.target.value != null)
+    ) {
+      setShowSummary(true)
+    }
+
   }
 
   // Declare a function to handle the form submission
@@ -70,7 +68,6 @@ function HomePage() {
                 value={username}
                 onChange={handleChange}
                 className="textValue"
-                onClick={handleClick}
               />{' '}
             </label>
           </div>
@@ -87,7 +84,6 @@ function HomePage() {
                     value={mobile}
                     onChange={handleChange}
                     className="textValue"
-                    onClick={handleClick}
                   />
                 </label>
               </div>
@@ -101,7 +97,6 @@ function HomePage() {
                     value={email}
                     onChange={handleChange}
                     className="textValue"
-                    onClick={handleClick}
                   />
                 </label>
               </div>
