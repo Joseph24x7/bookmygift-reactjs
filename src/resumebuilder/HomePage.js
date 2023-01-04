@@ -110,7 +110,7 @@ function HomePage() {
                         name="summary"
                         value={summary}
                         onChange={handleChange}
-                        className="textareaValue"
+                        className="summarytextarea"
                         maxLength="1000"
                       />
                     </label>
@@ -140,7 +140,15 @@ function HomePage() {
           </label>
           <hr />
           <div className="input-container">PROESSIONAL SUMMARY: </div>
-          <p className="summary">{summary}</p>
+          <div style={{ whiteSpace: 'pre-line' }}>
+            <p className="summary">
+              <ul>
+                {summary.split('\n').map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </p>
+          </div>
         </div>
       )}
       {showErrorMessage && <div className="error-message">{errorMessage}</div>}

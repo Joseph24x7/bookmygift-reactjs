@@ -59,6 +59,17 @@ body {
   font-size: 15px;
 }
 
+.summarytextarea {
+  width: 85%;
+  height: 200px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
 .textValue {
   color: black;
   font-size: 10px;
