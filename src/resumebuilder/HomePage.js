@@ -140,15 +140,13 @@ function HomePage() {
           </label>
           <hr />
           <div className="input-container">PROESSIONAL SUMMARY: </div>
-          <div style={{ whiteSpace: 'pre-line' }}>
-            <p className="summary">
-              <ul>
-                {summary.split('\n').map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </p>
-          </div>
+          <p className="summary">
+            <ul>
+              {summary.split('\n').map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </p>
         </div>
       )}
       {showErrorMessage && <div className="error-message">{errorMessage}</div>}
