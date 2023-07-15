@@ -1,0 +1,59 @@
+/* HomePage.css */
+
+/* Style for the welcome message */
+.welcome-message {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Style for the dashboard section */
+  .dashboard {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  
+  /* Style for each dashboard item */
+  .dashboard-item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1;
+  }
+  
+  .dashboard-item h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-item p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* Style for the logout button */
+  .logout-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #dd4b39;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  .logout-button:hover {
+    background-color: #c53929;
+  }
+  

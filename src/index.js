@@ -1,14 +1,18 @@
+import {
+  GoogleOAuthProvider
+} from "@react-oauth/google";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <GoogleOAuthProvider clientId="103420507616-7a46i3etinqm6di5pon8h7aa7h0a8jng.apps.googleusercontent.com">
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </GoogleOAuthProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
