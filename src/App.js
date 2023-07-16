@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import HomePage from "./components/HomePage";
 import MyProfile from "./components/MyProfile";
+import Banner from "./components/Banner";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user] = useState(null);
+  const [user, setUser] = useState(null); // Store user details here
   const [tokenResponse, setTokenResponse] = useState(null);
 
   useEffect(() => {
@@ -21,6 +22,22 @@ const App = () => {
 
       // Clear the URL parameters
       window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Fetch user information (you might have your own API endpoint to fetch user data)
+      fetch("http://localhost:8082/user-info", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Store user details in the state
+          setUser(data.user);
+        })
+        .catch((error) => {
+          console.error("Error fetching user information:", error);
+        });
     }
   }, []);
 
@@ -28,46 +45,48 @@ const App = () => {
     console.log("tokenResponse:", tokenResponse);
     setIsLoggedIn(true);
     setTokenResponse(tokenResponse);
-
-    // Make a backend API call to persist user information
-    fetch("http://localhost:8082/user-info", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Add any necessary authorization headers if required by your backend
-        // For example, if using JWT, you might need to include the token
-        // Authorization: `Bearer ${tokenResponse.access_token}`,
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((response) => {
-        // Handle the response from the backend if needed
-        console.log("Success persisting user information:", response);
-      })
-      .catch((error) => {
-        // Handle errors if any
-        console.error("Error persisting user information:", error);
-      });
   };
 
   const login = useGoogleLogin({
     onSuccess: onLoginSuccess,
   });
 
+  const handleSignUp = () => {
+    // Implement your sign-up logic here
+    console.log("Sign up button clicked!");
+  };
+
   return (
     <Router>
       <div className="app-container">
-        <h1 className="app-title">Book My Gift</h1>
+        <Banner
+          onLoginClick={login}
+          isLoggedIn={isLoggedIn}
+          userName={user?.name} // Pass the user's name to the Banner component
+          handleSignUp={handleSignUp} // Pass the handleSignUp function to the Banner component
+        />
         <div className="buttons-container">
           {!isLoggedIn ? (
-            <button className="login-gmail" onClick={login}>
-              Log in using gmail
-            </button>
+            <>
+              {/* The login button functionality is now in Banner.js */}
+              {/* Sign up button functionality is also in Banner.js */}
+            </>
           ) : (
             <Routes>
-              <Route path="/" element={<HomePage decodedData={user} handleLogout={() => setIsLoggedIn(false)} />} />
+              <Route
+                path="/"
+                element={
+                  <HomePage
+                    decodedData={user}
+                    handleLogout={() => setIsLoggedIn(false)}
+                  />
+                }
+              />
               {/* Pass the tokenResponse to the MyProfile component */}
-              <Route path="/profile" element={<MyProfile tokenResponse={tokenResponse} />} />
+              <Route
+                path="/profile"
+                element={<MyProfile tokenResponse={tokenResponse} />}
+              />
             </Routes>
           )}
         </div>

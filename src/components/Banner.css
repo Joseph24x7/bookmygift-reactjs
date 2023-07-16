@@ -1,0 +1,96 @@
+/* src/components/Banner.css */
+
+body {
+  overflow-x: hidden;
+}
+
+.banner {
+  position: fixed;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.banner-title {
+  font-size: 2.5rem; /* Reduced font size for better visual balance */
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Styling for the search bar input */
+.search-bar input[type="text"] {
+  flex: 1;
+  padding: 12px; /* Reduced padding for a more compact look */
+  font-size: 16px; /* Slightly reduced font size for better form factor */
+  border: none;
+  border-radius: 20px; /* Slightly rounded corners for a softer feel */
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Styling for the search button */
+.search-bar button {
+  padding: 12px 20px; /* Reduced padding for a more compact look */
+  font-size: 16px;
+  border: none;
+  border-radius: 20px; /* Slightly rounded corners for a softer feel */
+  cursor: pointer;
+  color: #fff;
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: Add some styling for the buttons */
+.banner-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: hidden;
+}
+
+.signup-button,
+.login-gmail {
+  padding: 12px 20px; /* Reduced padding for a more compact look */
+  font-size: 16px;
+  border-radius: 20px; /* Slightly rounded corners for a softer feel */
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-gmail {
+  background-color: #444;
+}
+
+.login-gmail:hover,
+.signup-button:hover {
+  background-color: #222;
+}
+
+.signup-button {
+  overflow-x: hidden;
+}

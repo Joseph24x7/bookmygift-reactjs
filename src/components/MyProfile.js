@@ -27,10 +27,7 @@ const MyProfile = ({ tokenResponse }) => {
       .then((data) => {
         setUserDetails(data);
         setIsLoading(false);
-        setEditedUserDetails((prevDetails) => ({
-          ...prevDetails,
-          ...data, // Update only the existing fields from fetched data
-        }));
+        setEditedUserDetails(data);
       })
       .catch((error) => {
         console.error("Error fetching user details:", error);
