@@ -2,10 +2,13 @@ import { useGoogleLogin } from "@react-oauth/google";
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import HomePage from "./components/HomePage";
+import MyProfile from "./components/MyProfile";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user] = useState(null);
+  const [tokenResponse, setTokenResponse] = useState(null);
 
   useEffect(() => {
     // Check if the user is redirected back from Gmail login
@@ -21,11 +24,10 @@ const App = () => {
     }
   }, []);
 
-  const onLoginSuccess = (tokenResponse, userResponse) => {
+  const onLoginSuccess = (tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
-
     setIsLoggedIn(true);
-    setUser(userResponse);
+    setTokenResponse(tokenResponse);
 
     // Make a backend API call to persist user information
     fetch("http://localhost:8082/user-info", {
@@ -53,18 +55,24 @@ const App = () => {
   });
 
   return (
-    <div className="app-container">
-      <h1 className="app-title">Book My Gift</h1>
-      <div className="buttons-container">
-        {!isLoggedIn ? (
-          <button className="login-gmail" onClick={login}>
-            Log in using gmail
-          </button>
-        ) : (
-          <HomePage />
-        )}
+    <Router>
+      <div className="app-container">
+        <h1 className="app-title">Book My Gift</h1>
+        <div className="buttons-container">
+          {!isLoggedIn ? (
+            <button className="login-gmail" onClick={login}>
+              Log in using gmail
+            </button>
+          ) : (
+            <Routes>
+              <Route path="/" element={<HomePage decodedData={user} handleLogout={() => setIsLoggedIn(false)} />} />
+              {/* Pass the tokenResponse to the MyProfile component */}
+              <Route path="/profile" element={<MyProfile tokenResponse={tokenResponse} />} />
+            </Routes>
+          )}
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 
