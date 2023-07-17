@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import React, { useEffect, useState } from "react";
 import "./App.css";
 import HomePage from "./components/HomePage";
 import MyProfile from "./components/MyProfile";
 import Banner from "./components/Banner";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,9 +47,16 @@ const App = () => {
     onSuccess: onLoginSuccess,
   });
 
-  const handleSignUp = () => {
-    // Implement your sign-up logic here
-    console.log("Sign up button clicked!");
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setTokenResponse(null);
+    setUserDetails({
+      name: "",
+      email: "",
+      username: "",
+      mobile: "",
+      gender: "male",
+    });
   };
 
   return (
@@ -59,7 +66,7 @@ const App = () => {
           onLoginClick={login}
           isLoggedIn={isLoggedIn}
           userDetails={userDetails}
-          handleSignUp={handleSignUp}
+          setIsLoggedIn={setIsLoggedIn}
         />
 
         <div className="buttons-container">
@@ -75,7 +82,7 @@ const App = () => {
                 element={
                   <HomePage
                     editedUserDetails={userDetails}
-                    handleLogout={() => setIsLoggedIn(false)}
+                    handleLogout={handleLogout}
                   />
                 }
               />
@@ -83,6 +90,7 @@ const App = () => {
                 path="/profile"
                 element={<MyProfile tokenResponse={tokenResponse} />}
               />
+              {/* Add more routes as needed */}
             </Routes>
           )}
         </div>

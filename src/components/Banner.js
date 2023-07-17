@@ -1,17 +1,20 @@
+// Banner.js
 import React from "react";
 import "./Banner.css"; // Import the updated Banner.css file
+import { Link } from "react-router-dom";
 
-const Banner = ({
-  onLoginClick,
-  isLoggedIn,
-  userDetails,
-  handleSignUp,
-  setIsLoggedIn,
-}) => {
+const Banner = ({ onLoginClick, isLoggedIn, userDetails, setIsLoggedIn }) => {
+  const handleLogout = () => {
+    // Perform logout actions here, e.g., clearing state and tokens
+    setIsLoggedIn(false);
+  };
+
   return (
     <div className="banner">
       <div className="banner-left">
-        <h1 className="banner-title">BookMyGift</h1>
+        <Link to="/" className="banner-title-button">
+          BookMyGift
+        </Link>
         <div className="search-bar">
           <input type="text" placeholder="Search..." />
           <button className="common-button">Search</button>
@@ -20,14 +23,14 @@ const Banner = ({
       {isLoggedIn ? (
         <div className="banner-right">
           <p className="welcome-name">Welcome {userDetails.name}</p>
-          <button className="common-button" onClick={() => setIsLoggedIn(false)}>
+          <button className="common-button" onClick={handleLogout}>
             Logout
           </button>
         </div>
       ) : (
         <div className="banner-right">
-          <button className="common-button" onClick={handleSignUp}>
-            Sign Up using Gmail
+          <button className="common-button" onClick={onLoginClick}>
+            Sign up using Gmail
           </button>
           <button className="common-button" onClick={onLoginClick}>
             Log in using Gmail
