@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import the necessary hooks
 import "./HomePage.css";
 
 const HomePage = (props) => {
-  const { editedUserDetails, handleLogout } = props;
+  const { editedUserDetails } = props;
   const navigate = useNavigate(); // Access the navigate function for navigation
 
   const handleBrowseProducts = () => {
@@ -41,7 +41,6 @@ const HomePage = (props) => {
           <p>Manage your profile information.</p>
         </div>
       </div>
-      <button className="logout-button" onClick={handleLogout}>Logout</button>
     </div>
   );
 };

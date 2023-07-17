@@ -3,7 +3,7 @@ import React from "react";
 import "./Banner.css"; // Import the updated Banner.css file
 import { Link } from "react-router-dom";
 
-const Banner = ({ onLoginClick, isLoggedIn, userDetails, setIsLoggedIn }) => {
+const Banner = ({ onSignUpClick, onLoginClick, isLoggedIn, userDetails, setIsLoggedIn }) => {
   const handleLogout = () => {
     // Perform logout actions here, e.g., clearing state and tokens
     setIsLoggedIn(false);
@@ -29,7 +29,7 @@ const Banner = ({ onLoginClick, isLoggedIn, userDetails, setIsLoggedIn }) => {
         </div>
       ) : (
         <div className="banner-right">
-          <button className="common-button" onClick={onLoginClick}>
+          <button className="common-button" onClick={onSignUpClick}>
             Sign up using Gmail
           </button>
           <button className="common-button" onClick={onLoginClick}>

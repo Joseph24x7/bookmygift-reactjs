@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Center items both horizontally and vertically */
   min-height: 100vh;
   background-color: #f7f7f7;
 }
@@ -13,23 +13,67 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 120px; /* Add margin to align buttons below the banner */
 }
 
-/* Optional: Add some styling for the homepage component */
-/* Assuming HomePage component has a wrapper div with the "homepage-wrapper" class */
+/* Loading state styling */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Set height to 100vh to center the loading spinner */
+}
 
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #333;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #ffdddd;
+  padding: 10px;
+  color: #ff0000;
+  font-weight: bold;
+  margin-top: 40px; /* Add some top margin to separate the error message from the login button */
+}
+
+/* Center the login button */
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 20px; /* Add top margin to separate the button from the error message */
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Optional: Add some margin to the top of the homepage content */
 .homepage-wrapper {
+  margin-top: 20px;
   padding: 20px;
   background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-/* Optional: Style the welcome message in HomePage component */
-
-.welcome-message {
-  font-size: 24px;
-  margin-bottom: 16px;
-  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }

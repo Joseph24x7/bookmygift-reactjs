@@ -23,6 +23,7 @@ const MyProfile = ({ tokenResponse }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-Action-Type": "update",
         },
         body: JSON.stringify(tokenResponse),
       })
