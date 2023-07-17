@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tokenResponse, setTokenResponse] = useState(null);
-  const [editedUserDetails, setEditedUserDetails] = useState({
+  const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
     username: "",
@@ -35,7 +35,7 @@ const App = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log("Apps User details response:", data);
-          setEditedUserDetails(data);
+          setUserDetails(data);
         })
         .catch((error) => {
           console.error("Error fetching user details.", error);
@@ -58,7 +58,7 @@ const App = () => {
         <Banner
           onLoginClick={login}
           isLoggedIn={isLoggedIn}
-          editedUserDetails={editedUserDetails}
+          userDetails={userDetails}
           handleSignUp={handleSignUp}
         />
 
@@ -74,7 +74,7 @@ const App = () => {
                 path="/"
                 element={
                   <HomePage
-                    editedUserDetails={editedUserDetails}
+                    editedUserDetails={userDetails}
                     handleLogout={() => setIsLoggedIn(false)}
                   />
                 }

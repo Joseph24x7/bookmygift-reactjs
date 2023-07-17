@@ -1,39 +1,39 @@
-// Banner.js
-
 import React from "react";
 import "./Banner.css"; // Import the updated Banner.css file
 
-const Banner = ({ onLoginClick, isLoggedIn, editedUserDetails, handleSignUp, setIsLoggedIn }) => {
+const Banner = ({
+  onLoginClick,
+  isLoggedIn,
+  userDetails,
+  handleSignUp,
+  setIsLoggedIn,
+}) => {
   return (
     <div className="banner">
       <div className="banner-left">
         <h1 className="banner-title">BookMyGift</h1>
         <div className="search-bar">
-          {/* Add your search bar input and styling here */}
-          {/* For example: */}
           <input type="text" placeholder="Search..." />
-          <button>Search</button>
+          <button className="common-button">Search</button>
         </div>
       </div>
-      <div className="banner-right">
-        {isLoggedIn ? (
-          <>
-            <p className="welcome-message">Welcome {editedUserDetails.name}</p>
-            <button className="logout-button" onClick={() => setIsLoggedIn(false)}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <button className="signup-button" onClick={handleSignUp}>
-              Sign Up
-            </button>
-            <button className="login-gmail" onClick={onLoginClick}>
-              Log in using Gmail
-            </button>
-          </>
-        )}
-      </div>
+      {isLoggedIn ? (
+        <div className="banner-right">
+          <p className="welcome-name">Welcome {userDetails.name}</p>
+          <button className="common-button" onClick={() => setIsLoggedIn(false)}>
+            Logout
+          </button>
+        </div>
+      ) : (
+        <div className="banner-right">
+          <button className="common-button" onClick={handleSignUp}>
+            Sign Up using Gmail
+          </button>
+          <button className="common-button" onClick={onLoginClick}>
+            Log in using Gmail
+          </button>
+        </div>
+      )}
     </div>
   );
 };
