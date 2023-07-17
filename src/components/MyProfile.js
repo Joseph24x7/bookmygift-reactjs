@@ -1,4 +1,3 @@
-// MyProfile.js
 import React, { useState, useEffect } from "react";
 import "./MyProfile.css"; // Import the CSS file for MyProfile component
 
@@ -7,32 +6,41 @@ const MyProfile = ({ tokenResponse }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserDetails, setEditedUserDetails] = useState({
-    name: "", // Set default value for name
-    email: "", // Set default value for email
-    username: "", // Set default value for username
-    mobile: "", // Set default value for mobile
-    gender: "", // Set default value for gender
+    name: "",
+    email: "",
+    username: "",
+    mobile: "",
+    gender: "male",
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch user details and set initial editedUserDetails
-    fetch("http://localhost:8082/user-info", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserDetails(data);
-        setIsLoading(false);
-        setEditedUserDetails(data);
+    const fetchUserDetails = () => {
+      setIsLoading(true);
+      setError(null);
+
+      fetch("http://localhost:8082/user-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tokenResponse),
       })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("User details response:", data);
+          setUserDetails(data);
+          setIsLoading(false);
+          setEditedUserDetails(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user details:", error);
+          setIsLoading(false);
+          setError("Error fetching user details.");
+        });
+    };
+
+    fetchUserDetails();
   }, [tokenResponse]);
 
   const handleEditClick = () => {
@@ -48,13 +56,11 @@ const MyProfile = ({ tokenResponse }) => {
   };
 
   const handleUpdateClick = () => {
-    // Include tokenResponse along with edited user details
     const updatedData = {
       ...editedUserDetails,
       tokenResponse: tokenResponse,
     };
 
-    // Make a backend API call to update the user details
     fetch("http://localhost:8082/update-user-info", {
       method: "PUT",
       headers: {
@@ -64,12 +70,14 @@ const MyProfile = ({ tokenResponse }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("updating user details response:", data);
         setUserDetails(data);
         setIsEditing(false);
       })
       .catch((error) => {
         console.error("Error updating user details:", error);
         setIsEditing(false);
+        setError("Error updating user details.");
       });
   };
 
@@ -77,61 +85,79 @@ const MyProfile = ({ tokenResponse }) => {
     <div className="profile-container">
       <h2 className="profile-title">My Profile</h2>
       {isLoading ? (
-        <p>Loading user details...</p>
+        <div className="loading-spinner"></div>
       ) : userDetails ? (
         <div className="user-details">
-          <div className="form-item">
+          <div className="form-group">
             <label htmlFor="name">Name:</label>
-            {isEditing ? (
-              <input type="text" id="name" name="name" value={editedUserDetails.name} onChange={handleInputChange} />
-            ) : (
-              <input type="text" id="name" value={userDetails.name} readOnly />
-            )}
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={isEditing ? editedUserDetails.name : userDetails.name}
+              onChange={handleInputChange}
+              className={isEditing ? "editable-input" : "read-only-input"}
+              readOnly={!isEditing}
+            />
           </div>
-          <div className="form-item">
+          <div className="form-group">
             <label htmlFor="email">Email:</label>
-            {isEditing ? (
-              <input type="email" id="email" name="email" value={editedUserDetails.email} onChange={handleInputChange} />
-            ) : (
-              <input type="email" id="email" value={userDetails.email} readOnly />
-            )}
+            <input type="email" id="email" value={userDetails.email} readOnly />
           </div>
-          <div className="form-item">
+          <div className="form-group">
             <label htmlFor="username">Username:</label>
-            {isEditing ? (
-              <input type="text" id="username" name="username" value={editedUserDetails.username} onChange={handleInputChange} />
-            ) : (
-              <input type="text" id="username" value={userDetails.username} readOnly />
-            )}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={isEditing ? editedUserDetails.username : userDetails.username}
+              onChange={handleInputChange}
+              className={isEditing ? "editable-input" : "read-only-input"}
+              readOnly={!isEditing}
+            />
           </div>
-          <div className="form-item">
+          <div className="form-group">
             <label htmlFor="mobile">Mobile Number:</label>
-            {isEditing ? (
-              <input type="tel" id="mobile" name="mobile" value={editedUserDetails.mobile} onChange={handleInputChange} />
-            ) : (
-              <input type="tel" id="mobile" value={userDetails.mobile} readOnly />
-            )}
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              value={isEditing ? editedUserDetails.mobile : userDetails.mobile}
+              onChange={handleInputChange}
+              className={isEditing ? "editable-input" : "read-only-input"}
+              readOnly={!isEditing}
+            />
           </div>
-          <div className="form-item">
+          <div className="form-group">
             <label htmlFor="gender">Gender:</label>
             {isEditing ? (
-              <input type="text" id="gender" name="gender" value={editedUserDetails.gender} onChange={handleInputChange} />
+              <select
+                id="gender"
+                name="gender"
+                value={editedUserDetails.gender}
+                onChange={handleInputChange}
+                className="editable-input"
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
             ) : (
               <input type="text" id="gender" value={userDetails.gender} readOnly />
             )}
           </div>
           {isEditing ? (
-            <button className="profile-btn" onClick={handleUpdateClick}>
+            <button className="profile-btn update-btn" onClick={handleUpdateClick}>
               Update
             </button>
           ) : (
-            <button className="profile-btn" onClick={handleEditClick}>
+            <button className="profile-btn edit-btn" onClick={handleEditClick}>
               Edit
             </button>
           )}
         </div>
       ) : (
-        <p>Error fetching user details.</p>
+        <p className="error-message">{error || "Error fetching user details."}</p>
       )}
     </div>
   );

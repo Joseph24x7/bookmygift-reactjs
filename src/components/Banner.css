@@ -1,9 +1,4 @@
 /* src/components/Banner.css */
-
-body {
-  overflow-x: hidden;
-}
-
 .banner {
   position: fixed;
   box-sizing: border-box;

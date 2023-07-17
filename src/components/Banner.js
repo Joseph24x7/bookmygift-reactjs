@@ -1,3 +1,5 @@
+// Banner.js
+
 import React from "react";
 import "./Banner.css"; // Import the updated Banner.css file
 
@@ -16,7 +18,7 @@ const Banner = ({ onLoginClick, isLoggedIn, editedUserDetails, handleSignUp, set
       <div className="banner-right">
         {isLoggedIn ? (
           <>
-            <p className="welcome-message">Welcome {editedUserDetails}</p>
+            <p className="welcome-message">Welcome {editedUserDetails.name}</p>
             <button className="logout-button" onClick={() => setIsLoggedIn(false)}>
               Logout
             </button>

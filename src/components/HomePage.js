@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import the necessary hooks
 import "./HomePage.css";
 
 const HomePage = (props) => {
-  const { decodedData, handleLogout } = props;
+  const { editedUserDetails, handleLogout } = props;
   const navigate = useNavigate(); // Access the navigate function for navigation
 
   const handleBrowseProducts = () => {
@@ -19,12 +19,12 @@ const HomePage = (props) => {
   const handleManageProfile = () => {
     console.log("Manage Profile clicked!");
     // Navigate to the UserProfilePage component with the user's ID as a parameter
-    navigate(`/profile/${decodedData ? decodedData.id : ""}`);
+    navigate(`/profile`);
   };
 
   return (
     <div>
-      <h1 className="welcome-message">Welcome, {decodedData ? decodedData.name : "User"}!</h1>
+      <h1 className="welcome-message">Welcome, {editedUserDetails ? editedUserDetails.name : "User"}!</h1>
       <div className="dashboard">
         <div className="dashboard-item" onClick={handleBrowseProducts}>
           <h2>Browse Products</h2>

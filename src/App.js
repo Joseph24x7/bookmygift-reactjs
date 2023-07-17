@@ -8,44 +8,40 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null); // Store user details here
   const [tokenResponse, setTokenResponse] = useState(null);
-
-  useEffect(() => {
-    // Check if the user is redirected back from Gmail login
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (token) {
-      // Redirected back from Gmail login, set login status to true
-      setIsLoggedIn(true);
-
-      // Clear the URL parameters
-      window.history.replaceState({}, document.title, window.location.pathname);
-
-      // Fetch user information (you might have your own API endpoint to fetch user data)
-      fetch("http://localhost:8082/user-info", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Store user details in the state
-          setUser(data.user);
-        })
-        .catch((error) => {
-          console.error("Error fetching user information:", error);
-        });
-    }
-  }, []);
+  const [editedUserDetails, setEditedUserDetails] = useState({
+    name: "",
+    email: "",
+    username: "",
+    mobile: "",
+    gender: "male",
+  });
 
   const onLoginSuccess = (tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
     setIsLoggedIn(true);
     setTokenResponse(tokenResponse);
   };
+
+  useEffect(() => {
+    if (tokenResponse) {
+      fetch("http://localhost:8082/user-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tokenResponse),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Apps User details response:", data);
+          setEditedUserDetails(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user details.", error);
+        });
+    }
+  }, [tokenResponse]);
 
   const login = useGoogleLogin({
     onSuccess: onLoginSuccess,
@@ -62,9 +58,10 @@ const App = () => {
         <Banner
           onLoginClick={login}
           isLoggedIn={isLoggedIn}
-          userName={user?.name} // Pass the user's name to the Banner component
-          handleSignUp={handleSignUp} // Pass the handleSignUp function to the Banner component
+          editedUserDetails={editedUserDetails}
+          handleSignUp={handleSignUp}
         />
+
         <div className="buttons-container">
           {!isLoggedIn ? (
             <>
@@ -77,12 +74,11 @@ const App = () => {
                 path="/"
                 element={
                   <HomePage
-                    decodedData={user}
+                    editedUserDetails={editedUserDetails}
                     handleLogout={() => setIsLoggedIn(false)}
                   />
                 }
               />
-              {/* Pass the tokenResponse to the MyProfile component */}
               <Route
                 path="/profile"
                 element={<MyProfile tokenResponse={tokenResponse} />}
