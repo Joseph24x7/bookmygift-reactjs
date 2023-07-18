@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import "./App.css";
 import HomePage from "./components/HomePage";
 import MyProfile from "./components/MyProfile";
 import Banner from "./components/Banner";
@@ -18,6 +17,18 @@ const App = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setTokenResponse(null);
+    setUserDetails({
+      name: "",
+      email: "",
+      username: "",
+      mobile: "",
+      gender: "male",
+    });
+  };
 
   const onLoginSuccess = (actionType, tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
@@ -68,6 +79,7 @@ const App = () => {
     }
   }, [tokenResponse]);
 
+  // Call the useGoogleLogin hook and store the results in variables
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => onLoginSuccess("login", tokenResponse),
   });
@@ -76,21 +88,9 @@ const App = () => {
     onSuccess: (tokenResponse) => onLoginSuccess("signup", tokenResponse),
   });
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setTokenResponse(null);
-    setUserDetails({
-      name: "",
-      email: "",
-      username: "",
-      mobile: "",
-      gender: "male",
-    });
-  };
-
   return (
     <Router>
-      <div className="app-container">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
         <Banner
           onLoginClick={() => login()}
           onSignUpClick={() => signUp()}
@@ -100,16 +100,23 @@ const App = () => {
         />
 
         {isLoading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
+          <div className="flex flex-col items-center justify-center h-screen">
+            <div className="border-4 border-solid border-opacity-30 border-gray-300 rounded-full w-40 h-40 animate-spin mb-16"></div>
             <p>Loading...</p>
           </div>
         ) : (
-          <div className="buttons-container">
+          <div className="flex flex-col items-center gap-10">
             {error ? (
               <>
-                <div className="error-message">{error}</div>
-                <button onClick={() => login()}>Login</button>
+                <div className="bg-red-100 p-4 text-red-600 font-bold mt-40">
+                  {error}
+                </div>
+                <button
+                  onClick={() => login()}
+                  className="bg-gray-800 text-white rounded-full px-6 py-3 text-lg shadow-md"
+                >
+                  Login
+                </button>
               </>
             ) : !isLoggedIn ? (
               <>
