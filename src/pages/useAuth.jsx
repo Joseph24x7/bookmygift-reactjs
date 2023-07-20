@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState({
@@ -45,6 +46,27 @@ const useAuth = () => {
     }
   }, []);
 
+  const updateUserInfo = (updatedData) => {
+    fetch("http://localhost:8082/update-user-info", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("updating user details response:", data);
+        setUserDetails(data);
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating user details:", error);
+        setIsEditing(false);
+        setError("Error updating user details.");
+      });
+  };
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setTokenResponse(null);
@@ -57,7 +79,22 @@ const useAuth = () => {
     });
   };
 
-  return { isLoading, error, isLoggedIn, userDetails, tokenResponse, setUserDetails, setTokenResponse, setIsLoggedIn, handleLogout, fetchUserInfo }; // Add tokenResponse to the return object
+  return {
+    isLoading,
+    error,
+    isLoggedIn,
+    userDetails,
+    tokenResponse,
+    isEditing,
+    setIsLoading,
+    setIsEditing,
+    setUserDetails,
+    setTokenResponse,
+    setIsLoggedIn,
+    handleLogout,
+    fetchUserInfo,
+    updateUserInfo,
+  }; // Add tokenResponse to the return object
 };
 
 export default useAuth;

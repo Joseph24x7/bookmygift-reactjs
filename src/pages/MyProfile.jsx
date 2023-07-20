@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import useAuth from "../pages/useAuth";
 
 const MyProfile = ({ tokenResponse }) => {
-  const [userDetails, setUserDetails] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
@@ -12,23 +9,19 @@ const MyProfile = ({ tokenResponse }) => {
     mobile: "",
     gender: "male",
   });
-  const [error, setError] = useState(null);
-  const { fetchUserInfo } = useAuth();
+  const {
+    fetchUserInfo,
+    updateUserInfo,
+    isEditing,
+    setIsEditing,
+    error,
+    isLoading,
+    userDetails,
+  } = useAuth();
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userData = await fetchUserInfo("view", tokenResponse);
-        setUserDetails(userData);
-        setEditedUserDetails(userData); // Initialize editedUserDetails with user data
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        setError("Error fetching user details.");
-      }
-    };
-
-    fetchUserDetails();
+    const userData = fetchUserInfo("view", tokenResponse);
+    setEditedUserDetails(userData);
   }, [fetchUserInfo, tokenResponse]);
 
   const handleEditClick = () => {
@@ -48,25 +41,7 @@ const MyProfile = ({ tokenResponse }) => {
       ...editedUserDetails,
       tokenResponse: tokenResponse,
     };
-
-    fetch("http://localhost:8082/update-user-info", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("updating user details response:", data);
-        setUserDetails(data);
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error("Error updating user details:", error);
-        setIsEditing(false);
-        setError("Error updating user details.");
-      });
+    updateUserInfo(updatedData);
   };
 
   return (

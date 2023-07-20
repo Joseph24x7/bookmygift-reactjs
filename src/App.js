@@ -23,7 +23,11 @@ const App = () => {
     console.log("tokenResponse:", tokenResponse);
     setTokenResponse(tokenResponse);
 
-    if (actionType === "login" || actionType === "signup" || actionType === "view") {
+    if (
+      actionType === "login" ||
+      actionType === "signup" ||
+      actionType === "view"
+    ) {
       fetchUserInfo(actionType, tokenResponse);
     }
   };

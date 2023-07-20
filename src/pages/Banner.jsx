@@ -13,7 +13,10 @@ const Banner = ({
   };
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4" style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
+    <div
+      className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4"
+      style={{ position: "fixed", top: 0, left: 0, right: 0 }}
+    >
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-4xl font-semibold">
