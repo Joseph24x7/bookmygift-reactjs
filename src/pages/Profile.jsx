@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useAuth from "../hooks/useAuth";
 
-const MyProfile = ({ tokenResponse }) => {
+const MyProfile = ({ tokenResponse, userDetails }) => {
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
@@ -10,19 +10,12 @@ const MyProfile = ({ tokenResponse }) => {
     gender: "male",
   });
   const {
-    fetchUserInfo,
     updateUserInfo,
     isEditing,
     setIsEditing,
     error,
     isLoading,
-    userDetails,
   } = useAuth();
-
-  useEffect(() => {
-    const userData = fetchUserInfo("view", tokenResponse);
-    setEditedUserDetails(userData);
-  }, [fetchUserInfo, tokenResponse]);
 
   const handleEditClick = () => {
     setIsEditing(true);

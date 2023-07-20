@@ -1,8 +1,9 @@
+// HomePage.js
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const HomePage = (props) => {
-  const { editedUserDetails } = props;
+const HomePage = ({ userDetails }) => {
   const navigate = useNavigate();
 
   const handleBrowseProducts = () => {
@@ -24,7 +25,7 @@ const HomePage = (props) => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold text-gray-600 my-10">
-        Welcome, {editedUserDetails ? editedUserDetails.name : "User"}!
+        Welcome, {userDetails ? userDetails.name : "User"}!
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
         <div

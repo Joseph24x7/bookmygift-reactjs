@@ -68,6 +68,7 @@ const useAuth = () => {
   };
 
   const handleLogout = () => {
+    console.log("handleLogoutClick clicked!");
     setIsLoggedIn(false);
     setTokenResponse(null);
     setUserDetails({

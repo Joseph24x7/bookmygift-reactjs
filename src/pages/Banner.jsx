@@ -1,15 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Banner = ({
-  onSignUpClick,
-  onLoginClick,
-  isLoggedIn,
-  userDetails,
-  setIsLoggedIn,
-}) => {
-  const handleLogout = () => {
+const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
+  
+  const navigate = useNavigate();
+
+  const handleSignIn = () => {
+    console.log("handleSignIn clicked!");
+    navigate(`/sign-in`);
+  };
+
+  const handleSignUp = () => {
+    console.log("handleSignUp clicked!");
+    navigate(`/sign-up`);
+  };
+
+  const handleLogoutClick = () => {
     setIsLoggedIn(false);
+    handleLogout(); // Call handleLogout when the Logout button is clicked
   };
 
   return (
@@ -36,10 +45,10 @@ const Banner = ({
         <div className="flex items-center gap-4">
           {isLoggedIn ? (
             <>
-              <p className="font-semibold">Welcome {userDetails.name}</p>
+              <p className="font-semibold">Welcome, {userDetails ? userDetails.name : "User"}!</p>
               <button
                 className="px-4 py-2 text-lg text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-red-600"
-                onClick={handleLogout}
+                onClick={handleLogoutClick}
               >
                 Logout
               </button>
@@ -48,15 +57,15 @@ const Banner = ({
             <>
               <button
                 className="px-4 py-2 text-lg text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                onClick={onSignUpClick}
+                onClick={handleSignUp}
               >
-                Sign up using Gmail
+                Sign up
               </button>
               <button
                 className="px-4 py-2 text-lg text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                onClick={onLoginClick}
+                onClick={handleSignIn}
               >
-                Log in using Gmail
+                Sign in
               </button>
             </>
           )}
