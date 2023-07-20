@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import HomePage from "./components/HomePage";
-import MyProfile from "./components/MyProfile";
-import Banner from "./components/Banner";
+import HomePage from "./pages/HomePage";
+import MyProfile from "./pages/MyProfile";
+import Banner from "./pages/Banner";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
