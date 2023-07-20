@@ -1,34 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import HomePage from "./pages/HomePage";
 import MyProfile from "./pages/MyProfile";
 import Banner from "./pages/Banner";
+import useAuth from "./pages/useAuth";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [tokenResponse, setTokenResponse] = useState(null);
-  const [userDetails, setUserDetails] = useState({
-    name: "",
-    email: "",
-    username: "",
-    mobile: "",
-    gender: "male",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setTokenResponse(null);
-    setUserDetails({
-      name: "",
-      email: "",
-      username: "",
-      mobile: "",
-      gender: "male",
-    });
-  };
+  const {
+    isLoading,
+    error,
+    isLoggedIn,
+    userDetails,
+    handleLogout,
+    fetchUserInfo,
+    setIsLoggedIn,
+    setTokenResponse, // Add setTokenResponse from useAuth hook
+    tokenResponse, // Add tokenResponse from useAuth hook
+  } = useAuth();
 
   const onLoginSuccess = (actionType, tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
@@ -36,48 +25,9 @@ const App = () => {
 
     // Call the appropriate web service based on actionType
     if (actionType === "login" || actionType === "signup") {
-      setIsLoading(true);
       fetchUserInfo(actionType, tokenResponse);
     }
   };
-
-  const fetchUserInfo = (actionType, tokenResponse) => {
-    fetch("http://localhost:8082/user-info", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Action-Type": actionType,
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.errorDescription);
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Apps User details response:", data);
-        setUserDetails(data);
-        setIsLoggedIn(true);
-        setError(null);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details.", error.message);
-        setError(error.message); // Set the error message from the caught error
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (tokenResponse) {
-      setIsLoading(true);
-      fetchUserInfo(tokenResponse);
-    }
-  }, [tokenResponse]);
 
   // Call the useGoogleLogin hook and store the results in variables
   const login = useGoogleLogin({
@@ -96,7 +46,7 @@ const App = () => {
           onSignUpClick={() => signUp()}
           isLoggedIn={isLoggedIn}
           userDetails={userDetails}
-          setIsLoggedIn={setIsLoggedIn}
+          setIsLoggedIn={setIsLoggedIn} // Corrected to use setIsLoggedIn from useAuth hook
         />
 
         {isLoading ? (
@@ -136,7 +86,7 @@ const App = () => {
                 />
                 <Route
                   path="/profile"
-                  element={<MyProfile tokenResponse={tokenResponse} />}
+                  element={<MyProfile tokenResponse={tokenResponse} />} // Corrected to use tokenResponse from useAuth hook
                 />
                 {/* Add more routes as needed */}
               </Routes>
