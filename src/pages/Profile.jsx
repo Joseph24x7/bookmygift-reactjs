@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useAuth from "../pages/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const MyProfile = ({ tokenResponse }) => {
   const [editedUserDetails, setEditedUserDetails] = useState({

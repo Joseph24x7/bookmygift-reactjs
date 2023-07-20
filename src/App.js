@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import HomePage from "./pages/HomePage";
-import MyProfile from "./pages/MyProfile";
+import HomePage from "./pages/Home";
+import MyProfile from "./pages/Profile";
 import Banner from "./pages/Banner";
-import useAuth from "./pages/useAuth";
+import useAuth from "./hooks/useAuth";
 
 const App = () => {
   const {
