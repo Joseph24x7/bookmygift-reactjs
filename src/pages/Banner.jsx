@@ -9,7 +9,6 @@ const Banner = ({
   setIsLoggedIn,
 }) => {
   const handleLogout = () => {
-    // Perform logout actions here, e.g., clearing state and tokens
     setIsLoggedIn(false);
   };
 

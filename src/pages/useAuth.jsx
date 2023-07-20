@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,38 +13,37 @@ const useAuth = () => {
   });
   const [tokenResponse, setTokenResponse] = useState(null); // Add tokenResponse state
 
-  const fetchUserInfo = (actionType, tokenResponse) => {
+  const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
     setIsLoading(true);
 
-    fetch("http://localhost:8082/user-info", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Action-Type": actionType,
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.errorDescription);
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Apps User details response:", data);
-        setUserDetails(data);
-        setIsLoggedIn(true);
-        setError(null);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details.", error.message);
-        setError(error.message);
-        setIsLoading(false);
+    try {
+      const response = await fetch("http://localhost:8082/user-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Action-Type": actionType,
+        },
+        body: JSON.stringify(tokenResponse),
       });
-  };
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.errorDescription);
+      }
+
+      const data = await response.json();
+      console.log("Apps User details response:", data);
+      setUserDetails(data);
+      setIsLoggedIn(true);
+      setError(null);
+      setIsLoading(false);
+      return data; // Return the userDetails data from the hook
+    } catch (error) {
+      console.error("Error fetching user details:", error.message);
+      setError(error.message);
+      setIsLoading(false);
+    }
+  }, []);
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -58,7 +57,7 @@ const useAuth = () => {
     });
   };
 
-  return { isLoading, error, isLoggedIn, userDetails, setTokenResponse, handleLogout, fetchUserInfo, tokenResponse }; // Add tokenResponse to the return object
+  return { isLoading, error, isLoggedIn, userDetails, tokenResponse, setUserDetails, setTokenResponse, setIsLoggedIn, handleLogout, fetchUserInfo }; // Add tokenResponse to the return object
 };
 
 export default useAuth;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useAuth from "../pages/useAuth";
 
 const MyProfile = ({ tokenResponse }) => {
   const [userDetails, setUserDetails] = useState(null);
@@ -12,36 +13,23 @@ const MyProfile = ({ tokenResponse }) => {
     gender: "male",
   });
   const [error, setError] = useState(null);
+  const { fetchUserInfo } = useAuth();
 
   useEffect(() => {
-    const fetchUserDetails = () => {
-      setIsLoading(true);
-      setError(null);
-
-      fetch("http://localhost:8082/user-info", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Action-Type": "update",
-        },
-        body: JSON.stringify(tokenResponse),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("User details response:", data);
-          setUserDetails(data);
-          setIsLoading(false);
-          setEditedUserDetails(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user details:", error);
-          setIsLoading(false);
-          setError("Error fetching user details.");
-        });
+    const fetchUserDetails = async () => {
+      try {
+        const userData = await fetchUserInfo("view", tokenResponse);
+        setUserDetails(userData);
+        setEditedUserDetails(userData); // Initialize editedUserDetails with user data
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setError("Error fetching user details.");
+      }
     };
 
     fetchUserDetails();
-  }, [tokenResponse]);
+  }, [fetchUserInfo, tokenResponse]);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -83,7 +71,9 @@ const MyProfile = ({ tokenResponse }) => {
 
   return (
     <div className="profile-container bg-gray-100 p-5 rounded-lg shadow-md w-96 mx-auto">
-      <h2 className="profile-title text-center text-3xl font-semibold mb-5 text-blue-700">My Profile</h2>
+      <h2 className="profile-title text-center text-3xl font-semibold mb-5 text-blue-700">
+        My Profile
+      </h2>
       {isLoading ? (
         <div className="flex items-center justify-center mb-8">
           <div className="loading-spinner border-4 border-solid border-blue-400 border-t-4 h-8 w-8 rounded-full animate-spin"></div>
@@ -100,8 +90,12 @@ const MyProfile = ({ tokenResponse }) => {
               name="name"
               value={isEditing ? editedUserDetails.name : userDetails.name}
               onChange={handleInputChange}
-              className={`form-input ${isEditing ? "bg-white" : "bg-gray-200"} w-full px-4 py-2 rounded-md border ${
-                isEditing ? "border-blue-500 focus:border-blue-700" : "border-gray-300"
+              className={`form-input ${
+                isEditing ? "bg-white" : "bg-gray-200"
+              } w-full px-4 py-2 rounded-md border ${
+                isEditing
+                  ? "border-blue-500 focus:border-blue-700"
+                  : "border-gray-300"
               }`}
               readOnly={!isEditing}
             />
@@ -126,10 +120,16 @@ const MyProfile = ({ tokenResponse }) => {
               type="text"
               id="username"
               name="username"
-              value={isEditing ? editedUserDetails.username : userDetails.username}
+              value={
+                isEditing ? editedUserDetails.username : userDetails.username
+              }
               onChange={handleInputChange}
-              className={`form-input ${isEditing ? "bg-white" : "bg-gray-200"} w-full px-4 py-2 rounded-md border ${
-                isEditing ? "border-blue-500 focus:border-blue-700" : "border-gray-300"
+              className={`form-input ${
+                isEditing ? "bg-white" : "bg-gray-200"
+              } w-full px-4 py-2 rounded-md border ${
+                isEditing
+                  ? "border-blue-500 focus:border-blue-700"
+                  : "border-gray-300"
               }`}
               readOnly={!isEditing}
             />
@@ -144,8 +144,12 @@ const MyProfile = ({ tokenResponse }) => {
               name="mobile"
               value={isEditing ? editedUserDetails.mobile : userDetails.mobile}
               onChange={handleInputChange}
-              className={`form-input ${isEditing ? "bg-white" : "bg-gray-200"} w-full px-4 py-2 rounded-md border ${
-                isEditing ? "border-blue-500 focus:border-blue-700" : "border-gray-300"
+              className={`form-input ${
+                isEditing ? "bg-white" : "bg-gray-200"
+              } w-full px-4 py-2 rounded-md border ${
+                isEditing
+                  ? "border-blue-500 focus:border-blue-700"
+                  : "border-gray-300"
               }`}
               readOnly={!isEditing}
             />
@@ -201,7 +205,6 @@ const MyProfile = ({ tokenResponse }) => {
       )}
     </div>
   );
-  
 };
 
 export default MyProfile;

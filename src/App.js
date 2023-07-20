@@ -15,21 +15,19 @@ const App = () => {
     handleLogout,
     fetchUserInfo,
     setIsLoggedIn,
-    setTokenResponse, // Add setTokenResponse from useAuth hook
-    tokenResponse, // Add tokenResponse from useAuth hook
+    setTokenResponse,
+    tokenResponse,
   } = useAuth();
 
   const onLoginSuccess = (actionType, tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
     setTokenResponse(tokenResponse);
 
-    // Call the appropriate web service based on actionType
-    if (actionType === "login" || actionType === "signup") {
+    if (actionType === "login" || actionType === "signup" || actionType === "view") {
       fetchUserInfo(actionType, tokenResponse);
     }
   };
 
-  // Call the useGoogleLogin hook and store the results in variables
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => onLoginSuccess("login", tokenResponse),
   });
@@ -46,7 +44,8 @@ const App = () => {
           onSignUpClick={() => signUp()}
           isLoggedIn={isLoggedIn}
           userDetails={userDetails}
-          setIsLoggedIn={setIsLoggedIn} // Corrected to use setIsLoggedIn from useAuth hook
+          setIsLoggedIn={setIsLoggedIn}
+          handleLogout={handleLogout}
         />
 
         {isLoading ? (
