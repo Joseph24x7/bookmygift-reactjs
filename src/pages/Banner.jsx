@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
-  
+export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -17,16 +16,16 @@ const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
   };
 
   const handleLogoutClick = () => {
+    console.log("handleLogoutClick clicked!");
     setIsLoggedIn(false);
-    handleLogout(); // Call handleLogout when the Logout button is clicked
+    handleLogout();
     navigate(`/`);
   };
 
+  const welcomeMessage = `Welcome, ${userDetails ? userDetails.name : "User"}!`;
+
   return (
-    <div
-      className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4"
-      style={{ position: "fixed", top: 0, left: 0, right: 0 }}
-    >
+    <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4 fixed top-0 left-0 right-0">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-4xl font-semibold">
@@ -46,7 +45,7 @@ const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
         <div className="flex items-center gap-4">
           {isLoggedIn ? (
             <>
-              <p className="font-semibold">Welcome, {userDetails ? userDetails.name : "User"}!</p>
+              <p className="font-semibold">{welcomeMessage}</p>
               <button
                 className="px-4 py-2 text-lg text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-red-600"
                 onClick={handleLogoutClick}
@@ -74,6 +73,4 @@ const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
       </div>
     </div>
   );
-};
-
-export default Banner;
+}

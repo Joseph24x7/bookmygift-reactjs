@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from "react";
 import useAuth from "../hooks/useAuth";
 
-const MyProfile = ({ userDetails, tokenResponse, setUserDetails }) => {
+export default function MyProfile({ userDetails, tokenResponse, setUserDetails }) {
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
@@ -16,7 +16,6 @@ const MyProfile = ({ userDetails, tokenResponse, setUserDetails }) => {
     setIsEditing(true);
   };
 
-  // This useEffect hook will update editedUserDetails when isEditing becomes true.
   useEffect(() => {
     if (isEditing && userDetails) {
       setEditedUserDetails(userDetails);
@@ -178,6 +177,4 @@ const MyProfile = ({ userDetails, tokenResponse, setUserDetails }) => {
       )}
     </div>
   );
-};
-
-export default MyProfile;
+}

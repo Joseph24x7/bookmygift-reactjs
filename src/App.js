@@ -11,8 +11,8 @@ import useAuth from "./hooks/useAuth";
 
 const App = () => {
   const { isLoading, error, handleLogout } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // Use useState hook here
-  const [userDetails, setUserDetails] = useState(null); // Use useState hook here
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
   const [tokenResponse, setTokenResponse] = useState(null);
 
   return (

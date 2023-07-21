@@ -3,7 +3,11 @@ import useAuth from "../hooks/useAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUp({ setIsLoggedIn, setUserDetails, setTokenResponse  }) {
+export default function SignUp({
+  setIsLoggedIn,
+  setUserDetails,
+  setTokenResponse,
+}) {
   const { fetchUserInfo } = useAuth();
 
   const navigate = useNavigate();
