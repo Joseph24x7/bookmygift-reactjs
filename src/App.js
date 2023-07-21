@@ -10,9 +10,10 @@ import SignUp from "./pages/SignUp";
 import useAuth from "./hooks/useAuth";
 
 const App = () => {
-  const { isLoading, error, handleLogout, tokenResponse } = useAuth();
+  const { isLoading, error, handleLogout } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Use useState hook here
   const [userDetails, setUserDetails] = useState(null); // Use useState hook here
+  const [tokenResponse, setTokenResponse] = useState(null);
 
   return (
     <Router>
@@ -44,14 +45,23 @@ const App = () => {
                         handleLogout={handleLogout}
                       />
                     ) : (
-                      <SignIn setIsLoggedIn={setIsLoggedIn} />
+                      <SignIn
+                        setIsLoggedIn={setIsLoggedIn}
+                        setUserDetails={setUserDetails}
+                        setTokenResponse={setTokenResponse}
+                      />
                     )
                   }
                 />
                 <Route
                   path="/profile"
-                  element={<MyProfile tokenResponse={tokenResponse}
-                  userDetails={userDetails} />}
+                  element={
+                    <MyProfile
+                      tokenResponse={tokenResponse}
+                      userDetails={userDetails}
+                      setUserDetails={setUserDetails}
+                    />
+                  }
                 />
                 <Route
                   path="/sign-up"
@@ -59,6 +69,17 @@ const App = () => {
                     <SignUp
                       setIsLoggedIn={setIsLoggedIn}
                       setUserDetails={setUserDetails}
+                      setTokenResponse={setTokenResponse}
+                    />
+                  }
+                />
+                <Route
+                  path="/sign-in"
+                  element={
+                    <SignIn
+                      setIsLoggedIn={setIsLoggedIn}
+                      setUserDetails={setUserDetails}
+                      setTokenResponse={setTokenResponse}
                     />
                   }
                 />

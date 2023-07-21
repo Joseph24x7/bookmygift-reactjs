@@ -3,17 +3,17 @@ import useAuth from "../hooks/useAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUp({ setIsLoggedIn, setUserDetails }) {
-  const { fetchUserInfo, setTokenResponse } = useAuth();
+export default function SignUp({ setIsLoggedIn, setUserDetails, setTokenResponse  }) {
+  const { fetchUserInfo } = useAuth();
 
   const navigate = useNavigate();
 
-  const onLoginSuccess = async (actionType, tokenResponse) => {
+  const onLoginSuccess = async (tokenResponse) => {
     console.log("tokenResponse:", tokenResponse);
     setTokenResponse(tokenResponse);
 
     try {
-      const userData = await fetchUserInfo("view", tokenResponse);
+      const userData = await fetchUserInfo("login", tokenResponse);
       setUserDetails(userData);
       setIsLoggedIn(true);
       navigate("/");
@@ -23,7 +23,7 @@ export default function SignUp({ setIsLoggedIn, setUserDetails }) {
   };
 
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => onLoginSuccess("login", tokenResponse),
+    onSuccess: (tokenResponse) => onLoginSuccess(tokenResponse),
   });
 
   return (

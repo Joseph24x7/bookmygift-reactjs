@@ -19,6 +19,7 @@ const Banner = ({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) => {
   const handleLogoutClick = () => {
     setIsLoggedIn(false);
     handleLogout(); // Call handleLogout when the Logout button is clicked
+    navigate(`/`);
   };
 
   return (

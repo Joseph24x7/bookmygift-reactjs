@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import useAuth from "../hooks/useAuth";
 
-const MyProfile = ({ tokenResponse, userDetails }) => {
+const MyProfile = ({ userDetails, tokenResponse, setUserDetails }) => {
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
@@ -9,17 +9,19 @@ const MyProfile = ({ tokenResponse, userDetails }) => {
     mobile: "",
     gender: "male",
   });
-  const {
-    updateUserInfo,
-    isEditing,
-    setIsEditing,
-    error,
-    isLoading,
-  } = useAuth();
+  const { updateUserInfo, isLoading, error, isEditing, setIsEditing } =
+    useAuth();
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
+
+  // This useEffect hook will update editedUserDetails when isEditing becomes true.
+  useEffect(() => {
+    if (isEditing && userDetails) {
+      setEditedUserDetails(userDetails);
+    }
+  }, [isEditing, userDetails]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +36,10 @@ const MyProfile = ({ tokenResponse, userDetails }) => {
       ...editedUserDetails,
       tokenResponse: tokenResponse,
     };
+    setEditedUserDetails(updatedData);
+    setUserDetails(updatedData);
     updateUserInfo(updatedData);
+    setIsEditing(false);
   };
 
   return (
