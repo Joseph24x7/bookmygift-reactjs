@@ -16,22 +16,22 @@ const useAuth = () => {
 
   const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
     setIsLoading(true);
-
+  
     try {
       const response = await fetch("http://localhost:8082/user-info", {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           "X-Action-Type": actionType,
+          Authorization: `${tokenResponse.access_token}`,
         },
-        body: JSON.stringify(tokenResponse),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.errorDescription);
       }
-
+  
       const data = await response.json();
       console.log("Apps User details response:", data);
       setUserDetails(data);

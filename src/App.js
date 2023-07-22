@@ -58,6 +58,7 @@ const App = () => {
                   element={
                     <MyProfile
                       tokenResponse={tokenResponse}
+                      setTokenResponse={setTokenResponse}
                       userDetails={userDetails}
                       setUserDetails={setUserDetails}
                     />

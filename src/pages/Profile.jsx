@@ -1,7 +1,11 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 
-export default function MyProfile({ userDetails, tokenResponse, setUserDetails }) {
+export default function MyProfile({
+  userDetails,
+  tokenResponse,
+  setUserDetails,
+}) {
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
