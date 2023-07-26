@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import axios from 'axios';
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,9 +18,10 @@ const useAuth = () => {
   const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
     setIsLoading(true);
   
+    console.log("Request Headers:", tokenResponse.access_token);
+  
     try {
-      const response = await fetch("http://localhost:8082/user-info", {
-        method: "GET",
+      const response = await axios.get("http://localhost:8082/user-info", {
         headers: {
           "Content-Type": "application/json",
           "X-Action-Type": actionType,
@@ -27,12 +29,7 @@ const useAuth = () => {
         },
       });
   
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.errorDescription);
-      }
-  
-      const data = await response.json();
+      const data = response.data;
       console.log("Apps User details response:", data);
       setUserDetails(data);
       setIsLoggedIn(true);
@@ -47,17 +44,14 @@ const useAuth = () => {
   }, []);
 
   const updateUserInfo = (updatedData) => {
-    fetch("http://localhost:8082/update-user-info", {
-      method: "PUT",
+    axios.put("http://localhost:8082/update-user-info", updatedData, {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedData),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("updating user details response:", data);
-        setUserDetails(data);
+      .then((response) => {
+        console.log("updating user details response:", response.data);
+        setUserDetails(response.data);
         setIsEditing(false);
       })
       .catch((error) => {
