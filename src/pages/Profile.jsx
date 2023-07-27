@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
+import { useLocation } from "react-router-dom";
 
-export default function MyProfile({
-  userDetails,
-  tokenResponse,
-  setUserDetails,
-}) {
+export default function MyProfile({ userDetails, setUserDetails }) {
+  const location = useLocation();
+  const tokenResponse = location.state?.tokenResponse || null;
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
@@ -34,14 +33,11 @@ export default function MyProfile({
     }));
   };
 
-  const handleUpdateClick = () => {
-    const updatedData = {
-      ...editedUserDetails,
-      tokenResponse: tokenResponse,
-    };
-    setEditedUserDetails(updatedData);
-    setUserDetails(updatedData);
-    updateUserInfo(updatedData);
+  const handleUpdateClick = (tokenResponse) => {
+    console.log("tokenResponse:", tokenResponse);
+    setEditedUserDetails(editedUserDetails);
+    setUserDetails(editedUserDetails);
+    updateUserInfo(editedUserDetails, tokenResponse);
     setIsEditing(false);
   };
 
@@ -160,7 +156,7 @@ export default function MyProfile({
             {isEditing ? (
               <button
                 className="profile-btn update-btn bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
-                onClick={handleUpdateClick}
+                onClick={() => handleUpdateClick(tokenResponse)}
               >
                 Update
               </button>

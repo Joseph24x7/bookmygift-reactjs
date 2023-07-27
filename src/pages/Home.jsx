@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function HomePage({ userDetails }) {
+export default function HomePage({ userDetails, tokenResponse  }) {
   const navigate = useNavigate();
 
   const DashboardCard = ({ iconClassName, title, description, onClick }) => (
@@ -25,7 +25,8 @@ export default function HomePage({ userDetails }) {
 
   const handleManageProfile = () => {
     console.log("Manage Profile clicked!");
-    navigate(`/profile`);
+    console.log("tokenResponse home:", tokenResponse);
+    navigate("/profile", { state: { tokenResponse } });
   };
 
   const welcomeMessage = `Welcome, ${userDetails ? userDetails.name : "User"}!`;
@@ -52,7 +53,7 @@ export default function HomePage({ userDetails }) {
           iconClassName="text-green-600 fas fa-user"
           title="My Profile"
           description="Manage your profile information."
-          onClick={handleManageProfile}
+          onClick={() => handleManageProfile(tokenResponse)}
         />
       </div>
     </div>

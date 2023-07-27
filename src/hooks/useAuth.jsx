@@ -13,13 +13,13 @@ const useAuth = () => {
     mobile: "",
     gender: "male",
   });
-  const [tokenResponse, setTokenResponse] = useState(null); // Add tokenResponse state
+  const [tokenResponse, setTokenResponse] = useState(null);
 
   const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
     setIsLoading(true);
-  
+
     console.log("Request Headers:", tokenResponse.access_token);
-  
+
     try {
       const response = await axios.get("http://localhost:8082/user-info", {
         headers: {
@@ -28,14 +28,14 @@ const useAuth = () => {
           Authorization: `${tokenResponse.access_token}`,
         },
       });
-  
+
       const data = response.data;
       console.log("Apps User details response:", data);
       setUserDetails(data);
       setIsLoggedIn(true);
       setError(null);
       setIsLoading(false);
-      return data; // Return the userDetails data from the hook
+      return data;
     } catch (error) {
       console.error("Error fetching user details:", error.message);
       setError(error.message);
@@ -43,10 +43,11 @@ const useAuth = () => {
     }
   }, []);
 
-  const updateUserInfo = (updatedData) => {
-    axios.put("http://localhost:8082/update-user-info", updatedData, {
+  const updateUserInfo = (editedUserDetails, tokenResponse) => {
+    axios.put("http://localhost:8082/update-user-info", editedUserDetails, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `${tokenResponse.access_token}`
       },
     })
       .then((response) => {
@@ -85,11 +86,10 @@ const useAuth = () => {
     setIsEditing,
     setUserDetails,
     setTokenResponse,
-    setIsLoggedIn,
     handleLogout,
     fetchUserInfo,
     updateUserInfo,
-  }; // Add tokenResponse to the return object
+  };
 };
 
 export default useAuth;

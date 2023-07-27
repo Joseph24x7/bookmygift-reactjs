@@ -5,16 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) {
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    console.log("handleSignIn clicked!");
-    navigate(`/sign-in`);
-  };
-
-  const handleSignUp = () => {
-    console.log("handleSignUp clicked!");
-    navigate(`/sign-up`);
-  };
-
   const handleLogoutClick = () => {
     console.log("handleLogoutClick clicked!");
     setIsLoggedIn(false);
@@ -28,7 +18,7 @@ export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLog
     <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4 fixed top-0 left-0 right-0">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" className="text-4xl font-semibold">
+          <Link to="/home" className="text-4xl font-semibold">
             BookMyGift
           </Link>
           <div className="flex items-center gap-4 ml-8">
@@ -55,18 +45,6 @@ export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLog
             </>
           ) : (
             <>
-              <button
-                className="px-4 py-2 text-lg text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                onClick={handleSignUp}
-              >
-                Sign up
-              </button>
-              <button
-                className="px-4 py-2 text-lg text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                onClick={handleSignIn}
-              >
-                Sign in
-              </button>
             </>
           )}
         </div>

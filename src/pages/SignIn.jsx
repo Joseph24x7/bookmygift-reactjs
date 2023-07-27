@@ -3,8 +3,12 @@ import useAuth from "../hooks/useAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
-export default function SignIn({ setIsLoggedIn, setUserDetails }) {
-  const { fetchUserInfo, setTokenResponse } = useAuth();
+export default function SignIn({
+  setIsLoggedIn,
+  setUserDetails,
+  setTokenResponse,
+}) {
+  const { fetchUserInfo } = useAuth();
 
   const navigate = useNavigate();
 
@@ -17,7 +21,7 @@ export default function SignIn({ setIsLoggedIn, setUserDetails }) {
       setUserDetails(userData);
       setIsLoggedIn(true);
 
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
@@ -34,7 +38,7 @@ export default function SignIn({ setIsLoggedIn, setUserDetails }) {
           <h2 className="text-2xl font-semibold">SignIn</h2>
           <div>
             <label htmlFor="username" className="block font-medium">
-              Username:
+              Email:
             </label>
             <input
               type="text"
@@ -43,19 +47,8 @@ export default function SignIn({ setIsLoggedIn, setUserDetails }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
             />
           </div>
-          <div>
-            <label htmlFor="password" className="block font-medium">
-              Password:
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-            />
-          </div>
           <button className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">
-            Sign In
+            Continue with email
           </button>
           <div className="flex items-center space-x-2">
             <div className="w-full h-px bg-gray-300"></div>
