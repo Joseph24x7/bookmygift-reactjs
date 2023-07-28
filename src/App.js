@@ -5,10 +5,12 @@ import MyProfile from "./pages/Profile";
 import Banner from "./pages/Banner";
 import SignIn from "./pages/SignIn";
 import useAuth from "./hooks/useAuth";
+import LoadingButton from "./hooks/LoadingButton"
 
 const App = () => {
-  const { isLoading, error, handleLogout } = useAuth();
+  const { error, handleLogout } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [tokenResponse, setTokenResponse] = useState(null);
 
@@ -23,17 +25,14 @@ const App = () => {
         />
 
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-screen">
-            <div className="border-4 border-solid border-opacity-30 border-gray-300 rounded-full w-40 h-40 animate-spin mb-16"></div>
-            <p>Loading...</p>
-          </div>
+          <LoadingButton />
         ) : (
           <div className="flex flex-col items-center gap-10">
             {error ? (
               <></>
             ) : (
               <Routes>
-                <Route path="/sign-in" element={<SignIn setIsLoggedIn={setIsLoggedIn} setUserDetails={setUserDetails} setTokenResponse={setTokenResponse} />} />
+                <Route path="/sign-in" element={<SignIn setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} setUserDetails={setUserDetails} setTokenResponse={setTokenResponse} />} />
                 <Route
                   path="/*"
                   element={

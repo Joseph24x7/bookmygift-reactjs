@@ -7,22 +7,23 @@ export default function SignIn({
   setIsLoggedIn,
   setUserDetails,
   setTokenResponse,
+  setIsLoading
 }) {
   const { fetchUserInfo } = useAuth();
 
   const navigate = useNavigate();
 
   const onLoginSuccess = async (tokenResponse) => {
-    console.log("tokenResponse:", tokenResponse);
     setTokenResponse(tokenResponse);
-
+    setIsLoading(true);
     try {
       const userData = await fetchUserInfo("login", tokenResponse);
+      setIsLoading(false);
       setUserDetails(userData);
       setIsLoggedIn(true);
-
       navigate("/home");
     } catch (error) {
+      setIsLoading(false);
       console.error("Error fetching user details:", error);
     }
   };

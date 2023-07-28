@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import axios from 'axios';
 
 const useAuth = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,10 +15,6 @@ const useAuth = () => {
   const [tokenResponse, setTokenResponse] = useState(null);
 
   const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
-    setIsLoading(true);
-
-    console.log("Request Headers:", tokenResponse.access_token);
-
     try {
       const response = await axios.get("http://localhost:8082/user-info", {
         headers: {
@@ -30,16 +25,14 @@ const useAuth = () => {
       });
 
       const data = response.data;
-      console.log("Apps User details response:", data);
+      console.log("fetchUserInfo response:", data);
       setUserDetails(data);
       setIsLoggedIn(true);
       setError(null);
-      setIsLoading(false);
       return data;
     } catch (error) {
-      console.error("Error fetching user details:", error.message);
+      console.error("Error fetchUserInfo:", error.message);
       setError(error.message);
-      setIsLoading(false);
     }
   }, []);
 
@@ -76,13 +69,11 @@ const useAuth = () => {
   };
 
   return {
-    isLoading,
     error,
     isLoggedIn,
     userDetails,
     tokenResponse,
     isEditing,
-    setIsLoading,
     setIsEditing,
     setUserDetails,
     setTokenResponse,

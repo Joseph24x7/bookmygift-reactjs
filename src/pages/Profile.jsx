@@ -5,12 +5,13 @@ import { useLocation } from "react-router-dom";
 export default function MyProfile({ userDetails, setUserDetails }) {
   const location = useLocation();
   const tokenResponse = location.state?.tokenResponse || null;
+  const [errorMessage, setErrorMessage] = useState("");
   const [editedUserDetails, setEditedUserDetails] = useState({
     name: "",
     email: "",
     username: "",
     mobile: "",
-    gender: "male",
+    gender: "",
   });
   const { updateUserInfo, isLoading, error, isEditing, setIsEditing } =
     useAuth();
@@ -27,6 +28,13 @@ export default function MyProfile({ userDetails, setUserDetails }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // Validate mobile number: Allow only 10-digit numbers
+    setErrorMessage("");
+    if (name === "mobile") {
+      if (value.length>0 && !/^\d{10}$/.test(value)) {
+        setErrorMessage("Mobile number must be exactly 10 numeric digits.");
+      }
+    }
     setEditedUserDetails((prevDetails) => ({
       ...prevDetails,
       [name]: value,
@@ -34,7 +42,9 @@ export default function MyProfile({ userDetails, setUserDetails }) {
   };
 
   const handleUpdateClick = (tokenResponse) => {
-    console.log("tokenResponse:", tokenResponse);
+    if (errorMessage) {
+      return;
+    }
     setEditedUserDetails(editedUserDetails);
     setUserDetails(editedUserDetails);
     updateUserInfo(editedUserDetails, tokenResponse);
@@ -54,7 +64,7 @@ export default function MyProfile({ userDetails, setUserDetails }) {
         <div className="user-details">
           <div className="form-group mb-4">
             <label htmlFor="name" className="font-semibold text-gray-600">
-              Name:
+              Full Name:
             </label>
             <input
               type="text"
@@ -125,6 +135,9 @@ export default function MyProfile({ userDetails, setUserDetails }) {
               }`}
               readOnly={!isEditing}
             />
+            {errorMessage && (
+              <p className="error-message text-red-500">{errorMessage}</p>
+            )}
           </div>
           <div className="form-group mb-4">
             <label htmlFor="gender" className="font-semibold text-gray-600">
@@ -141,6 +154,7 @@ export default function MyProfile({ userDetails, setUserDetails }) {
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
+                <option value="not_say">Rather not say</option>
               </select>
             ) : (
               <input
@@ -157,6 +171,7 @@ export default function MyProfile({ userDetails, setUserDetails }) {
               <button
                 className="profile-btn update-btn bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
                 onClick={() => handleUpdateClick(tokenResponse)}
+                disabled={errorMessage} // Disable the button if errorMessage is not empty
               >
                 Update
               </button>
