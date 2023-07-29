@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const useAuth = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -36,13 +36,42 @@ const useAuth = () => {
     }
   }, []);
 
+  const loginWithAccessCode = async (email) => {
+    console.log("loginWithAccessCode entered with email: ", email);
+    try {
+      await axios.post("http://localhost:8082/login-with-access-code", {
+        email: email,
+      });
+    } catch (error) {
+      console.error("Error while making the email API call:", error);
+    }
+  };
+
+  const verifyAccessCode = async (email, accessCode) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8082/verify-access-code",
+        {
+          accessCode: accessCode,
+          email: email,
+        }
+      );
+      console.log("verifyAccessToken response:", response.data);
+      return response.data.access_token; // Assuming the response contains an access_token property.
+    } catch (error) {
+      console.error("Error while verifying the access token:", error);
+      return null;
+    }
+  };
+
   const updateUserInfo = (editedUserDetails, tokenResponse) => {
-    axios.put("http://localhost:8082/update-user-info", editedUserDetails, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${tokenResponse.access_token}`
-      },
-    })
+    axios
+      .put("http://localhost:8082/update-user-info", editedUserDetails, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${tokenResponse.access_token}`,
+        },
+      })
       .then((response) => {
         console.log("updating user details response:", response.data);
         setUserDetails(response.data);
@@ -80,6 +109,8 @@ const useAuth = () => {
     handleLogout,
     fetchUserInfo,
     updateUserInfo,
+    loginWithAccessCode,
+    verifyAccessCode,
   };
 };
 
