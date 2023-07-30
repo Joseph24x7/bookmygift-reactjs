@@ -14,12 +14,11 @@ const useAuth = () => {
   });
   const [tokenResponse, setTokenResponse] = useState(null);
 
-  const fetchUserInfo = useCallback(async (actionType, tokenResponse) => {
+  const fetchUserInfo = useCallback(async (tokenResponse) => {
     try {
       const response = await axios.get("http://localhost:8082/user-info", {
         headers: {
           "Content-Type": "application/json",
-          "X-Action-Type": actionType,
           Authorization: `${tokenResponse.access_token}`,
         },
       });
@@ -44,6 +43,11 @@ const useAuth = () => {
       });
     } catch (error) {
       console.error("Error while making the email API call:", error);
+      if (error.response && error.response.status === 400) {
+        return { errorDescription: error.response.data.errorDescription };
+      } else {
+        return { error: error };
+      }
     }
   };
 
@@ -57,10 +61,14 @@ const useAuth = () => {
         }
       );
       console.log("verifyAccessToken response:", response.data);
-      return response.data.access_token; // Assuming the response contains an access_token property.
+      return { accessToken: response.data };
     } catch (error) {
-      console.error("Error while verifying the access token:", error);
-      return null;
+      console.error("Error while verifyAccessToken data:", error.response.data);
+      if (error.response && error.response.status === 400) {
+        return { errorDescription: error.response.data.errorDescription };
+      } else {
+        return { error: error };
+      }
     }
   };
 

@@ -2,7 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLoggedIn }) {
+export default function Banner({
+  isLoggedIn,
+  userDetails,
+  handleLogout,
+  setIsLoggedIn,
+}) {
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
@@ -12,7 +17,9 @@ export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLog
     navigate(`/`);
   };
 
-  const welcomeMessage = `Welcome, ${userDetails ? userDetails.name : "User"}!`;
+  const welcomeMessage = `Welcome, ${
+    userDetails && userDetails.name ? userDetails.name : "User"
+  }!`;
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white shadow-md p-4 fixed top-0 left-0 right-0">
@@ -44,8 +51,7 @@ export default function Banner({ isLoggedIn, userDetails, handleLogout, setIsLog
               </button>
             </>
           ) : (
-            <>
-            </>
+            <></>
           )}
         </div>
       </div>

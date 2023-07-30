@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function HomePage({ userDetails, tokenResponse  }) {
+export default function HomePage({ userDetails, tokenResponse }) {
   const navigate = useNavigate();
 
   const DashboardCard = ({ iconClassName, title, description, onClick }) => (
@@ -29,7 +29,9 @@ export default function HomePage({ userDetails, tokenResponse  }) {
     navigate("/profile", { state: { tokenResponse } });
   };
 
-  const welcomeMessage = `Welcome, ${userDetails ? userDetails.name : "User"}!`;
+  const welcomeMessage = `Welcome, ${
+    userDetails && userDetails.name ? userDetails.name : "User"
+  }!`;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
