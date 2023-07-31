@@ -7,11 +7,8 @@ export default function MyProfile({ userDetails, setUserDetails }) {
   const tokenResponse = location.state?.tokenResponse || null;
   const [errorMessage, setErrorMessage] = useState("");
   const [editedUserDetails, setEditedUserDetails] = useState({
-    name: "",
-    email: "",
-    username: "",
-    mobile: "",
-    gender: "",
+    ...userDetails,
+    gender: "Male",
   });
   const { updateUserInfo, isLoading, error, isEditing, setIsEditing } =
     useAuth();
@@ -21,9 +18,7 @@ export default function MyProfile({ userDetails, setUserDetails }) {
   };
 
   useEffect(() => {
-    if (isEditing && userDetails) {
-      setEditedUserDetails(userDetails);
-    }
+    setEditedUserDetails(userDetails);
   }, [isEditing, userDetails]);
 
   const handleInputChange = (e) => {
@@ -31,7 +26,7 @@ export default function MyProfile({ userDetails, setUserDetails }) {
     // Validate mobile number: Allow only 10-digit numbers
     setErrorMessage("");
     if (name === "mobile") {
-      if (value.length>0 && !/^\d{10}$/.test(value)) {
+      if (value.length > 0 && !/^\d{10}$/.test(value)) {
         setErrorMessage("Mobile number must be exactly 10 numeric digits.");
       }
     }
@@ -45,7 +40,6 @@ export default function MyProfile({ userDetails, setUserDetails }) {
     if (errorMessage) {
       return;
     }
-    setEditedUserDetails(editedUserDetails);
     setUserDetails(editedUserDetails);
     updateUserInfo(editedUserDetails, tokenResponse);
     setIsEditing(false);
@@ -147,14 +141,16 @@ export default function MyProfile({ userDetails, setUserDetails }) {
               <select
                 id="gender"
                 name="gender"
-                value={editedUserDetails.gender}
+                value={
+                  isEditing ? editedUserDetails.gender : userDetails.gender
+                }
                 onChange={handleInputChange}
                 className="form-select w-full px-4 py-2 rounded-md border border-gray-300"
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-                <option value="not_say">Rather not say</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Rather not say">Rather not say</option>
               </select>
             ) : (
               <input

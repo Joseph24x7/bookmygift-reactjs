@@ -18,13 +18,17 @@ export default function SignIn({
 
   const onLoginSuccess = async (tokenResponse) => {
     setTokenResponse(tokenResponse);
-    setIsLoading(true);
     try {
-      const userData = await fetchUserInfo(tokenResponse);
-      setIsLoading(false);
-      setUserDetails(userData);
-      setIsLoggedIn(true);
-      navigate("/home");
+      const response = await fetchUserInfo(tokenResponse);
+      console.log("onLoginSuccess response:", response);
+      if (response && response.errorDescription) {
+        setError(response.errorDescription);
+      } else {
+        setIsLoading(false);
+        setUserDetails(response);
+        setIsLoggedIn(true);
+        navigate("/home");
+      }
     } catch (error) {
       setIsLoading(false);
       console.error("Error fetching user details:", error);
@@ -34,8 +38,8 @@ export default function SignIn({
   const handleEmailSubmit = async () => {
     try {
       const response = await loginWithAccessCode(email);
+      console.log("handleEmailSubmit response:", response);
       if (response && response.errorDescription) {
-        console.log("handleEmailSubmit response:", response);
         setError(response.errorDescription);
         setShowAccessCodeInput(false);
       } else {

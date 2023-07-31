@@ -2,18 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function Banner({
-  isLoggedIn,
-  userDetails,
-  handleLogout,
-  setIsLoggedIn,
-}) {
+export default function Banner({ isLoggedIn, userDetails, setIsLoggedIn }) {
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
     console.log("handleLogoutClick clicked!");
     setIsLoggedIn(false);
-    handleLogout();
     navigate(`/`);
   };
 

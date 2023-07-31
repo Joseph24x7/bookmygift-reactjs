@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import HomePage from "./pages/Home";
 import MyProfile from "./pages/Profile";
 import Banner from "./pages/Banner";
 import SignIn from "./pages/SignIn";
-import useAuth from "./hooks/useAuth";
-import LoadingButton from "./hooks/LoadingButton"
+import LoadingButton from "./hooks/LoadingButton";
 
 const App = () => {
-  const { error, handleLogout } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
@@ -20,7 +23,6 @@ const App = () => {
         <Banner
           isLoggedIn={isLoggedIn}
           userDetails={userDetails}
-          handleLogout={handleLogout}
           setIsLoggedIn={setIsLoggedIn}
         />
 
@@ -28,26 +30,50 @@ const App = () => {
           <LoadingButton />
         ) : (
           <div className="flex flex-col items-center gap-10">
-            {error ? (
-              <></>
-            ) : (
-              <Routes>
-                <Route path="/sign-in" element={<SignIn setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} setUserDetails={setUserDetails} setTokenResponse={setTokenResponse} />} />
-                <Route
-                  path="/*"
-                  element={
-                    isLoggedIn ? (
-                      <Routes>
-                        <Route path="/home" element={<HomePage userDetails={userDetails} handleLogout={handleLogout} tokenResponse={tokenResponse} />} />
-                        <Route path="/profile" element={<MyProfile tokenResponse={tokenResponse} setTokenResponse={setTokenResponse} userDetails={userDetails} setUserDetails={setUserDetails} />} />
-                      </Routes>
-                    ) : (
-                      <Navigate to="/sign-in" />
-                    )
-                  }
-                />
-              </Routes>
-            )}
+            <Routes>
+              <Route
+                path="/sign-in"
+                element={
+                  <SignIn
+                    setIsLoggedIn={setIsLoggedIn}
+                    setIsLoading={setIsLoading}
+                    setUserDetails={setUserDetails}
+                    setTokenResponse={setTokenResponse}
+                  />
+                }
+              />
+              <Route
+                path="/*"
+                element={
+                  isLoggedIn ? (
+                    <Routes>
+                      <Route
+                        path="/home"
+                        element={
+                          <HomePage
+                            userDetails={userDetails}
+                            tokenResponse={tokenResponse}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/profile"
+                        element={
+                          <MyProfile
+                            tokenResponse={tokenResponse}
+                            setTokenResponse={setTokenResponse}
+                            userDetails={userDetails}
+                            setUserDetails={setUserDetails}
+                          />
+                        }
+                      />
+                    </Routes>
+                  ) : (
+                    <Navigate to="/sign-in" />
+                  )
+                }
+              />
+            </Routes>
           </div>
         )}
       </div>

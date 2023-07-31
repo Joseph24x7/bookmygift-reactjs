@@ -3,15 +3,6 @@ import axios from "axios";
 
 const useAuth = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userDetails, setUserDetails] = useState({
-    name: "",
-    email: "",
-    username: "",
-    mobile: "",
-    gender: "male",
-  });
   const [tokenResponse, setTokenResponse] = useState(null);
 
   const fetchUserInfo = useCallback(async (tokenResponse) => {
@@ -23,15 +14,17 @@ const useAuth = () => {
         },
       });
 
-      const data = response.data;
-      console.log("fetchUserInfo response:", data);
-      setUserDetails(data);
-      setIsLoggedIn(true);
-      setError(null);
-      return data;
+      console.log("fetchUserInfo response:", response.data);
+      return response.data;
     } catch (error) {
       console.error("Error fetchUserInfo:", error.message);
-      setError(error.message);
+      if (error.response) {
+        return { errorDescription: error.response.data.errorDescription };
+      } else {
+        return {
+          errorDescription: "Something went wrong. Try again after sometime.",
+        };
+      }
     }
   }, []);
 
@@ -42,11 +35,13 @@ const useAuth = () => {
         email: email,
       });
     } catch (error) {
-      console.error("Error while making the email API call:", error);
-      if (error.response && error.response.status === 400) {
+      console.error("loginWithAccessCode failed:", error);
+      if (error.response) {
         return { errorDescription: error.response.data.errorDescription };
       } else {
-        return { error: error };
+        return {
+          errorDescription: "Something went wrong. Try again after sometime.",
+        };
       }
     }
   };
@@ -82,39 +77,19 @@ const useAuth = () => {
       })
       .then((response) => {
         console.log("updating user details response:", response.data);
-        setUserDetails(response.data);
         setIsEditing(false);
       })
       .catch((error) => {
         console.error("Error updating user details:", error);
         setIsEditing(false);
-        setError("Error updating user details.");
       });
   };
 
-  const handleLogout = () => {
-    console.log("handleLogoutClick clicked!");
-    setIsLoggedIn(false);
-    setTokenResponse(null);
-    setUserDetails({
-      name: "",
-      email: "",
-      username: "",
-      mobile: "",
-      gender: "male",
-    });
-  };
-
   return {
-    error,
-    isLoggedIn,
-    userDetails,
     tokenResponse,
     isEditing,
     setIsEditing,
-    setUserDetails,
     setTokenResponse,
-    handleLogout,
     fetchUserInfo,
     updateUserInfo,
     loginWithAccessCode,
