@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,24 @@ export default function SignIn({
   const [showAccessCodeInput, setShowAccessCodeInput] = useState(false);
   const [accessCode, setAccessCode] = useState("");
   const [error, setError] = useState("");
+  const [isResending, setIsResending] = useState(false);
+  const [resendTimer, setResendTimer] = useState(30);
+
+  useEffect(() => {
+    let interval;
+
+    if (isResending && resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (isResending && resendTimer === 0) {
+      // Timer reached zero, reset the resend state
+      setIsResending(false);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isResending, resendTimer]);
 
   const onLoginSuccess = async (tokenResponse) => {
     setTokenResponse(tokenResponse);
@@ -50,6 +68,23 @@ export default function SignIn({
       console.error("Error while logging in with email:", error);
       setShowAccessCodeInput(false);
       setError("An error occurred while logging in with email.");
+    }
+  };
+
+  const handleResendAccessCode = async () => {
+    try {
+      const response = await loginWithAccessCode(email, true);
+      console.log("handleResendAccessCode response:", response);
+      if (response && response.errorDescription) {
+        setError(response.errorDescription);
+      } else {
+        setIsResending(true);
+        setResendTimer(30);
+        setError("");
+      }
+    } catch (error) {
+      console.error("Error while resending access code:", error);
+      setError("An error occurred while resending access code.");
     }
   };
 
@@ -96,7 +131,23 @@ export default function SignIn({
               >
                 Submit Access Code
               </button>
-              {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
+              {isResending ? (
+                <p className="text-center mb-4">
+                  Resend new access code in {resendTimer} seconds
+                </p>
+              ) : (
+                <>
+                  <div className="my-2" />{" "}
+                  {/* Add proper space between the buttons */}
+                  <button
+                    className="w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-200"
+                    onClick={handleResendAccessCode}
+                  >
+                    Resend new access code
+                  </button>
+                </>
+              )}
+              {error && <p className="text-red-500 mt-2">{error}</p>}
               {/* Display the error message if it exists */}
             </div>
           ) : (
