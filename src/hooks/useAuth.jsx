@@ -67,22 +67,31 @@ const useAuth = () => {
     }
   };
 
-  const updateUserInfo = (editedUserDetails, tokenResponse) => {
-    axios
-      .put("http://localhost:8082/update-user-info", editedUserDetails, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${tokenResponse.access_token}`,
-        },
-      })
-      .then((response) => {
-        console.log("updating user details response:", response.data);
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error("Error updating user details:", error);
-        setIsEditing(false);
-      });
+  const updateUserInfo = async (editedUserDetails, tokenResponse) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8082/update-user-info",
+        editedUserDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${tokenResponse.access_token}`,
+          },
+        }
+      );
+
+      console.log("updating user details response:", response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("updateUserInfo failed:", error.response);
+      if (error.response) {
+        return { errorDescription: error.response.data.errorDescription };
+      } else {
+        return {
+          errorDescription: "Something went wrong. Try again after sometime.",
+        };
+      }
+    }
   };
 
   return {
